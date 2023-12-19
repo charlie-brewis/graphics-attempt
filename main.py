@@ -21,13 +21,13 @@ square_edges = [
 ]
 
 cube_vertexes = [
-    [CENT - QUART,  CENT - QUART, 0], # TLF
-    [CENT - QUART,  CENT - QUART, QUART], # TLB
-    [CENT + QUART, CENT - QUART, 0], # TRF
+    [CENT - QUART,  CENT - QUART, 0],    # TLF
+    [CENT - QUART, CENT - QUART, QUART], # TLB
+    [CENT + QUART, CENT - QUART, 0],     # TRF
     [CENT + QUART, CENT - QUART, QUART], # TRB
-    [CENT + QUART, CENT + QUART, 0], # BRF
+    [CENT + QUART, CENT + QUART, 0],     # BRF
     [CENT + QUART, CENT + QUART, QUART], # BRB
-    [CENT - QUART, CENT + QUART, 0], # BLF
+    [CENT - QUART, CENT + QUART, 0],     # BLF
     [CENT - QUART, CENT + QUART, QUART], # BLB
 ]
 

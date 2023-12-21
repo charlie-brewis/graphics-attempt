@@ -4,8 +4,6 @@ WIN_SIZE = 200
 CENT = WIN_SIZE // 2
 QUART = CENT // 2
 
-FOCAL_LENGTH = CENT
-
 square_vertexes = [
     [CENT - QUART,  CENT - QUART], # TL
     [CENT + QUART, CENT - QUART], # TR
@@ -47,19 +45,19 @@ cube_edges = [
 ]
 
 
-def project_value(val: float, z: float) -> float:
-    return (FOCAL_LENGTH * val) / (FOCAL_LENGTH + z)
+def project_value(val: float, z: float, focal_length: float) -> float:
+    return (focal_length * val) / (focal_length + z)
 
-def project_3d_vertex(vertex: (float, float, float)) -> (float, float):
+def project_3d_vertex(vertex: (float, float, float), focal_length: float) -> (float, float):
     x, y, z = vertex
-    x_projected = project_value(x, z)
-    y_projected = project_value(y, z)
+    x_projected = project_value(x, z, focal_length)
+    y_projected = project_value(y, z, focal_length)
     return (x_projected, y_projected)
 
-def project_vertex_table(vertex_table: list[float]) -> list[float]:
+def project_vertex_table(vertex_table: list[float], focal_length: float) -> list[float]:
     projected_vertex_table = []
     for vertex in vertex_table:
-        projected_vertex = project_3d_vertex(vertex)
+        projected_vertex = project_3d_vertex(vertex, focal_length)
         projected_vertex_table.append(projected_vertex)
     return projected_vertex_table
 
@@ -76,7 +74,10 @@ def draw_obj_from_verticies(win: GraphWin, vertex_table: list[list[float]], edge
 
 def main() -> None:
     win = GraphWin("3D cube", 200, 200)
-    projected_cube_vertexes = project_vertex_table(cube_vertexes)
+    focal_length = CENT
+    for focal_length in range(100):
+    projected_cube_vertexes = project_vertex_table(cube_vertexes, focal_length)
+    £ Implement undraw param
     draw_obj_from_verticies(win, projected_cube_vertexes, cube_edges)
     win.getMouse()
     win.close()

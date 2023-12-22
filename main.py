@@ -4,12 +4,14 @@ WIN_SIZE = 200
 CENT = WIN_SIZE // 2
 QUART = CENT // 2
 
+
 square_vertexes = [
     [CENT - QUART,  CENT - QUART], # TL
     [CENT + QUART, CENT - QUART], # TR
     [CENT + QUART, CENT + QUART], # BR
     [CENT - QUART, CENT + QUART], # BL
 ]
+
 
 square_edges = [
     [0, 1],
@@ -86,11 +88,10 @@ def main() -> None:
     projected_cube_vertexes = project_vertex_table(cube_vertexes, focal_length)
     draw_obj_from_verticies(win, projected_cube_vertexes, cube_edges)
 
-    #* focal length display
+    #* focal length display - to move: render, undrender, genrate next value, repeat
     # last_cube_vertexes = cube_vertexes
     # for focal_length in range(1, 300):
     #     projected_cube_vertexes = project_vertex_table(last_cube_vertexes, focal_length)
-    #     # target_vertexes = move_vertex_table()
     #     edges = draw_obj_from_verticies(win, projected_cube_vertexes, cube_edges)
     #     undraw_edges(edges)
 

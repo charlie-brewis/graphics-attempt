@@ -1,8 +1,10 @@
 from graphics import *
+from math import sin, cos
 
 WIN_SIZE = 200
 CENT = WIN_SIZE // 2
 QUART = CENT // 2
+
 
 
 square_vertexes = [
@@ -99,6 +101,15 @@ def undraw_edges(edges: list[Line]) -> None:
     for edge in edges:
         edge.undraw()
 
+def rotate_vertex(vertex: list[float], theta: float, axis= 'x' | 'y' | 'z') -> list[float]:
+    excluded_index = 'xyz'.index(axis)
+    excluded_value = vertex.pop(excluded_index)
+    # mutliply vertex by 2d rotation matrix
+    # insert excluded value into excluded_index
+    twoD_rotaion_matrix = [
+        [cos(theta), -sin(theta)],
+        [sin(theta), cos(theta)]
+    ]
 
 
 def main() -> None:
@@ -106,8 +117,6 @@ def main() -> None:
     focal_length = 2 * CENT
     original_vetexes = pyramid_vertexes
     original_edges = pyramid_edges
-
-
     projected_cube_vertexes = project_vertex_table(original_vetexes, focal_length)
     draw_obj_from_verticies(win, projected_cube_vertexes, original_edges)
 

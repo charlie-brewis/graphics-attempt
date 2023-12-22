@@ -72,18 +72,28 @@ def draw_obj_from_verticies(win: GraphWin, vertex_table: list[list[float]], edge
         v2 = vertex_table[edge[1]]
         draw_edge(win, v1, v2)
 
-def move_vertex(orginal_vertex: list[float], target_vertex: list[float]) -> list[float]:
+def move_2d_vertex(orginal_vertex: list[float], target_vertex: list[float]) -> list[float]:
     dx = target_vertex[0] - orginal_vertex[0]
     dy = target_vertex[1] - orginal_vertex[1]
-    orginal_vertex.
+    return [orginal_vertex[0] + dx, orginal_vertex[1] + dy]
+
+def move_vertex_table(original_vertex_table: list[list[float]], target_vertex_table: list[list[float]]) -> list[list[float]]:
+    moved_vertex_table = []
+    for i in range(len(original_vertex_table)):
+        original_vertex = original_vertex_table[i]
+        target_vertex = target_vertex_table[i]
+        moved_vertex = move_2d_vertex(original_vertex, target_vertex)
+        moved_vertex_table.append(moved_vertex)
+    return moved_vertex_table
 
 def main() -> None:
     win = GraphWin("3D cube", 200, 200)
     focal_length = CENT
-    last_cube_vertexes = cube_vertexes
+    last_cube_vertexes = project_vertex_table(cube_vertexes, focal_length)
+    projected_cube_vertexes = project_vertex_table(cube_vertexes, focal_length)
     for focal_length in range(100):
-        projected_cube_vertexes = project_vertex_table(last_cube_vertexes, focal_length)
-        draw_obj_from_verticies(win, projected_cube_vertexes, cube_edges)
+        projected_cube_vertexes = move_vertex_table(last_cube_vertexes, projected_cube_vertexes)
+        draw_obj_from_verticies(win, projected_cube_vertexes, cube_edges)   
         last_cube_vertexes = projected_cube_vertexes
 
 

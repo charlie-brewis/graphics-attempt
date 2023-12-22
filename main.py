@@ -21,14 +21,14 @@ square_edges = [
 ]
 
 cube_vertexes = [
-    [CENT - QUART,  CENT - QUART, 0],    # TLF
-    [CENT - QUART, CENT - QUART, QUART], # TLB
-    [CENT + QUART, CENT - QUART, 0],     # TRF
-    [CENT + QUART, CENT - QUART, QUART], # TRB
-    [CENT + QUART, CENT + QUART, 0],     # BRF
-    [CENT + QUART, CENT + QUART, QUART], # BRB
-    [CENT - QUART, CENT + QUART, 0],     # BLF
-    [CENT - QUART, CENT + QUART, QUART], # BLB
+    [CENT - QUART, CENT - QUART, 0],    # TLF
+    [CENT - QUART, CENT - QUART, CENT], # TLB
+    [CENT + QUART, CENT - QUART, 0],    # TRF
+    [CENT + QUART, CENT - QUART, CENT], # TRB
+    [CENT + QUART, CENT + QUART, 0],    # BRF
+    [CENT + QUART, CENT + QUART, CENT], # BRB
+    [CENT - QUART, CENT + QUART, 0],    # BLF
+    [CENT - QUART, CENT + QUART, CENT], # BLB
 ]
 
 cube_edges = [
@@ -44,6 +44,25 @@ cube_edges = [
     [4, 6],
     [5, 7],
     [6, 7]
+]
+
+pyramid_vertexes = [
+    [CENT, CENT - QUART, QUART],        # T
+    [CENT + QUART, CENT + QUART, 0],    # FR
+    [CENT + QUART, CENT + QUART, CENT], # BR
+    [CENT - QUART, CENT + QUART, 0],    # FL
+    [CENT - QUART, CENT + QUART, CENT]  # BL
+]
+
+pyramid_edges = [
+    [0, 1],
+    [0, 2],
+    [0, 3],
+    [0, 4],
+    [1, 2],
+    [1, 3],
+    [2, 4],
+    [3, 4]
 ]
 
 
@@ -84,9 +103,13 @@ def undraw_edges(edges: list[Line]) -> None:
 
 def main() -> None:
     win = GraphWin("3D cube", 200, 200)
-    focal_length = CENT
-    projected_cube_vertexes = project_vertex_table(cube_vertexes, focal_length)
-    draw_obj_from_verticies(win, projected_cube_vertexes, cube_edges)
+    focal_length = 2 * CENT
+    original_vetexes = pyramid_vertexes
+    original_edges = pyramid_edges
+
+
+    projected_cube_vertexes = project_vertex_table(original_vetexes, focal_length)
+    draw_obj_from_verticies(win, projected_cube_vertexes, original_edges)
 
     #* focal length display - to move: render, undrender, genrate next value, repeat
     # last_cube_vertexes = cube_vertexes

@@ -140,12 +140,12 @@ def main() -> None:
 
     #* Rotation
     focal_length = 2 * CENT
-    axis = 'x'
-    theta = 1
+    axis = 'y'
+    theta = 0.01
     vertexes = cube_vertexes
-    vertexes = project_vertex_table(vertexes, focal_length)
     while True:
-        edges = draw_obj_from_verticies(win, vertexes, cube_edges)
+        projected_vertexes = project_vertex_table(vertexes, focal_length) 
+        edges = draw_obj_from_verticies(win, projected_vertexes, cube_edges)
         vertexes = rotate_vertex_table(vertexes, theta, axis)
         undraw_edges(edges)
         

@@ -71,11 +71,11 @@ pyramid_edges = [
 def project_value(val: float, z: float, focal_length: float) -> float:
     return (focal_length * val) / (focal_length + z)
 
-def project_3d_vertex(vertex: (float, float, float), focal_length: float) -> (float, float):
+def project_3d_vertex(vertex: [float, float, float], focal_length: float) -> [float, float]:
     x, y, z = vertex
     x_projected = project_value(x, z, focal_length)
     y_projected = project_value(y, z, focal_length)
-    return (x_projected, y_projected)
+    return [x_projected, y_projected]
 
 def project_vertex_table(vertex_table: list[float], focal_length: float) -> list[float]:
     projected_vertex_table = []
@@ -101,24 +101,35 @@ def undraw_edges(edges: list[Line]) -> None:
     for edge in edges:
         edge.undraw()
 
-def rotate_vertex(vertex: list[float], theta: float, axis= 'x' | 'y' | 'z') -> list[float]:
+def rotate_vertex(vertex: list[float], theta: float, axis: str) -> list[float]:
     excluded_index = 'xyz'.index(axis)
     excluded_value = vertex.pop(excluded_index)
-    # mutliply vertex by 2d rotation matrix
-    # insert excluded value into excluded_index
-    twoD_rotaion_matrix = [
-        [cos(theta), -sin(theta)],
-        [sin(theta), cos(theta)]
-    ]
+    # A = [y, z] * B = [[cos(theta), -sin(theta)]
+    #                  [sin(theta), cos(theta)]]
+    # A is 1x2, B is 2x2
+    # METHOD:
+    # A[row0] * B[col0] -> ycos(theta) + zsin(theta)  --> Result = [ycos(theta) + zsin(theta), ]
+    # A[row1] * B[col1] -> -ysin(theta) + zcos(theta) --> Result = [ycos(theta) + zsin(theta), -ysin(theta) + zcos(theta)]
+    #! List index 1 out of range
+    rotated_vertex = [vertex[0]*cos(theta) + vertex[1]*sin(theta), -vertex[0]*sin(theta) + vertex[1]*cos(theta)]
+    rotated_vertex.insert(excluded_index, excluded_value)
+    return rotated_vertex
 
+
+def rotate_vertex_table(vertex_table: list[list[float]], theta: float, axis: str) -> list[list[float]]:
+    new_vertex_table = []
+    for vertex in vertex_table:
+        rotated_vertex = rotate_vertex(vertex, theta, axis)
+        new_vertex_table.append(rotated_vertex)
+    return new_vertex_table
 
 def main() -> None:
     win = GraphWin("3D cube", 200, 200)
-    focal_length = 2 * CENT
-    original_vetexes = pyramid_vertexes
-    original_edges = pyramid_edges
-    projected_cube_vertexes = project_vertex_table(original_vetexes, focal_length)
-    draw_obj_from_verticies(win, projected_cube_vertexes, original_edges)
+    # focal_length = 2 * CENT
+    # # original_vetexes = pyramid_vertexes
+    # original_edges = pyramid_edges
+    # projected_cube_vertexes = project_vertex_table(original_vetexes, focal_length)
+    # draw_obj_from_verticies(win, projected_cube_vertexes, original_edges)
 
     #* focal length display - to move: render, undrender, genrate next value, repeat
     # last_cube_vertexes = cube_vertexes
@@ -126,6 +137,22 @@ def main() -> None:
     #     projected_cube_vertexes = project_vertex_table(last_cube_vertexes, focal_length)
     #     edges = draw_obj_from_verticies(win, projected_cube_vertexes, cube_edges)
     #     undraw_edges(edges)
+
+    #* Rotation
+    focal_length = 2 * CENT
+    axis = 'x'
+    theta = 1
+    vertexes = cube_vertexes
+    vertexes = project_vertex_table(vertexes, focal_length)
+    while True:
+        edges = draw_obj_from_verticies(win, vertexes, cube_edges)
+        vertexes = rotate_vertex_table(vertexes, theta, axis)
+        undraw_edges(edges)
+        
+
+
+
+
 
 
 

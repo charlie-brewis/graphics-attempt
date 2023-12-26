@@ -101,6 +101,7 @@ def undraw_edges(edges: list[Line]) -> None:
     for edge in edges:
         edge.undraw()
 
+#! Rotate does not work how expected, could be an issue here or maybe coordinate system?
 def rotate_vertex(vertex: list[float], theta: float, axis: str) -> list[float]:
     excluded_index = 'xyz'.index(axis)
     excluded_value = vertex.pop(excluded_index)
@@ -110,7 +111,6 @@ def rotate_vertex(vertex: list[float], theta: float, axis: str) -> list[float]:
     # METHOD:
     # A[row0] * B[col0] -> ycos(theta) + zsin(theta)  --> Result = [ycos(theta) + zsin(theta), ]
     # A[row1] * B[col1] -> -ysin(theta) + zcos(theta) --> Result = [ycos(theta) + zsin(theta), -ysin(theta) + zcos(theta)]
-    #! List index 1 out of range
     rotated_vertex = [vertex[0]*cos(theta) + vertex[1]*sin(theta), -vertex[0]*sin(theta) + vertex[1]*cos(theta)]
     rotated_vertex.insert(excluded_index, excluded_value)
     return rotated_vertex
